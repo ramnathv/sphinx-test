@@ -1,0 +1,4 @@
+\select@language {english}
+\contentsline {chapter}{\numberline {1}First Steps with Sphinx}{3}{chapter.1}
+\contentsline {section}{\numberline {1.1}Setting up the documentation sources}{3}{section.1.1}
+\contentsline {chapter}{\numberline {2}Indices and tables}{5}{chapter.2}

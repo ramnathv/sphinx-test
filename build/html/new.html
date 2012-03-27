@@ -1,0 +1,213 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+
+    <title>First Steps with Sphinx &mdash; sphinx-test 0.01 documentation</title>
+
+<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;"/>
+
+
+    
+    <link rel="stylesheet" href="_static/rtd.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.01',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="_static/searchtools.js"></script>
+    <link rel="top" title="sphinx-test 0.01 documentation" href="index.html" />
+    <link rel="next" title="Using Pandoc and knitR with Sphinx" href="source.html" />
+    <link rel="prev" title="Welcome to sphinx-test’s documentation!" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="source.html" title="Using Pandoc and knitR with Sphinx"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to sphinx-test’s documentation!"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">sphinx-test 0.01 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="first-steps-with-sphinx">
+<h1>First Steps with Sphinx<a class="headerlink" href="#first-steps-with-sphinx" title="Permalink to this headline">¶</a></h1>
+<p>This document is meant to give a tutorial-like overview of all common tasks
+while using Sphinx.</p>
+<p>The green arrows designate &#8220;more info&#8221; links leading to advanced sections about
+the described task.</p>
+<div class="section" id="setting-up-the-documentation-sources">
+<h2>Setting up the documentation sources<a class="headerlink" href="#setting-up-the-documentation-sources" title="Permalink to this headline">¶</a></h2>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Author:</th><td class="field-body">Ramnath Vaidyanathan</td>
+</tr>
+<tr class="field-even field"><th class="field-name">University:</th><td class="field-body">McGill University</td>
+</tr>
+</tbody>
+</table>
+<p>The root directory of a documentation collection is called the <cite>source
+directory</cite>.  This directory also contains the Sphinx configuration file
+<cite>conf.py</cite>, where you can configure all aspects of how Sphinx reads your
+sources and builds your documentation.</p>
+<p>Sphinx comes with a script called <cite>sphinx-quickstart</cite> that sets up a
+source directory and creates a default <cite>conf.py</cite> with the most useful
+configuration values from a few questions it asks you.  Just run</p>
+<div class="highlight-r"><div class="highlight"><pre><span class="p">$</span> sphinx<span class="o">-</span>quickstart
+</pre></div>
+</div>
+<p>and answer its questions.  (Be sure to say yes to the &#8220;autodoc&#8221; extension.)</p>
+<div class="highlight-r"><div class="highlight"><pre>library<span class="p">(</span>ggplot2<span class="p">)</span>
+qplot<span class="p">(</span>wt<span class="p">,</span> mpg<span class="p">,</span> data <span class="o">=</span> mtcars<span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-r"><div class="highlight"><pre>theme_to_header_html <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>theme<span class="p">){</span>
+  css_file <span class="o">=</span> <span class="kr">if</span> <span class="p">(</span>file.exists<span class="p">(</span>theme<span class="p">))</span> theme <span class="kr">else</span> <span class="p">{</span>
+<span class="hll">    system.file<span class="p">(</span><span class="s">&quot;themes&quot;</span><span class="p">,</span> sprintf<span class="p">(</span><span class="s">&quot;%s.css&quot;</span><span class="p">,</span> theme<span class="p">),</span> package <span class="o">=</span> <span class="s">&quot;knitr&quot;</span><span class="p">)</span>
+</span><span class="hll">  <span class="p">}</span>
+</span>  <span class="c1"># css_knitr = system.file(&#39;themes&#39;, &#39;.knitr.css&#39;, package = &#39;knitr&#39;)</span>
+  css_knitr <span class="o">&lt;-</span> <span class="s">&#39;~/Desktop/R_Projects/knitr/inst/themes/.knitr.css&#39;</span>
+  stringr<span class="p">::</span>str_c<span class="p">(</span>c<span class="p">(</span>
+    <span class="s">&#39;&lt;style type=&quot;text/css&quot;&gt;&#39;</span><span class="p">,</span> 
+    readLines<span class="p">(</span>css_knitr<span class="p">),</span>
+    readLines<span class="p">(</span>css_file<span class="p">),</span> 
+    <span class="s">&#39;&lt;/style&gt;&#39;</span><span class="p">),</span> 
+        collapse <span class="o">=</span> <span class="s">&#39;\n&#39;</span><span class="p">)</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The default role (<tt class="docutils literal"><span class="pre">`content`</span></tt>) has no special meaning by default.  You
+are free to use it for anything you like, e.g. variable names; use the
+<a href="#id1"><span class="problematic" id="id2">:confval:`default_role`</span></a> config value to set it to a known role.</p>
+</div>
+<p>Another way to highlight code is to doe the following:</p>
+<div class="highlight-r"><div class="highlight"><pre>library<span class="p">(</span>ggplot2<span class="p">)</span>
+qplot<span class="p">(</span>wt<span class="p">,</span> mpg<span class="p">,</span> data <span class="o">=</span> mtcars<span class="p">)</span>
+theme_to_header_html <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>theme<span class="p">){</span>
+  css_file <span class="o">=</span> <span class="kr">if</span> <span class="p">(</span>file.exists<span class="p">(</span>theme<span class="p">))</span> theme <span class="kr">else</span> <span class="p">{</span>
+    system.file<span class="p">(</span><span class="s">&quot;themes&quot;</span><span class="p">,</span> sprintf<span class="p">(</span><span class="s">&quot;%s.css&quot;</span><span class="p">,</span> theme<span class="p">),</span> package <span class="o">=</span> <span class="s">&quot;knitr&quot;</span><span class="p">)</span>
+  <span class="p">}</span>
+  <span class="c1"># css_knitr = system.file(&#39;themes&#39;, &#39;.knitr.css&#39;, package = &#39;knitr&#39;)</span>
+  css_knitr <span class="o">&lt;-</span> <span class="s">&#39;~/Desktop/R_Projects/knitr/inst/themes/.knitr.css&#39;</span>
+  stringr<span class="p">::</span>str_c<span class="p">(</span>c<span class="p">(</span>
+    <span class="s">&#39;&lt;style type=&quot;text/css&quot;&gt;&#39;</span><span class="p">,</span>
+    readLines<span class="p">(</span>css_knitr<span class="p">),</span>
+    readLines<span class="p">(</span>css_file<span class="p">),</span>
+    <span class="s">&#39;&lt;/style&gt;&#39;</span><span class="p">),</span>
+        collapse <span class="o">=</span> <span class="s">&#39;\n&#39;</span><span class="p">)</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition-see-also admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last">This is a simple <strong>seealso</strong> note. Other inline directive may be included (e.g., math <span class="math">\(\alpha\)</span>) but not al of them.</p>
+</div>
+<div class="math">
+\[\begin{eqnarray}
+   y    & = & ax^2 + bx + c \\
+   f(x) & = & x^2 + 2xy + y^2
+\end{eqnarray}\]</div><p>We can define our hypothesis as <span class="math">\(H_0:\mu = \mu_0, H_a:\mu = \mu_a\)</span></p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">First Steps with Sphinx</a><ul>
+<li><a class="reference internal" href="#setting-up-the-documentation-sources">Setting up the documentation sources</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Welcome to sphinx-test&#8217;s documentation!</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="source.html"
+                        title="next chapter">Using Pandoc and knitR with Sphinx</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/new.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="source.html" title="Using Pandoc and knitR with Sphinx"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to sphinx-test’s documentation!"
+             >previous</a> |</li>
+        <li><a href="index.html">sphinx-test 0.01 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+<div class="footer">
+    &copy; Copyright 2012, Ramnath Vaidyanathan.
+  Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+  <br />Theme based on <a href="http://readthedocs.org/">Read The Docs</a>
+
+</div>
+
+
+
+
+
+  </body>
+</html>

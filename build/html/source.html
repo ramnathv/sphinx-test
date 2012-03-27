@@ -1,0 +1,214 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+
+    <title>Using Pandoc and knitR with Sphinx &mdash; sphinx-test 0.01 documentation</title>
+
+<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;"/>
+
+
+    
+    <link rel="stylesheet" href="_static/rtd.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.01',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="_static/searchtools.js"></script>
+    <link rel="top" title="sphinx-test 0.01 documentation" href="index.html" />
+    <link rel="next" title="Statistical Computing Seminars: Graphics in R I" href="intro.html" />
+    <link rel="prev" title="First Steps with Sphinx" href="new.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="intro.html" title="Statistical Computing Seminars: Graphics in R I"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="new.html" title="First Steps with Sphinx"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">sphinx-test 0.01 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="using-pandoc-and-knitr-with-sphinx">
+<h1>Using Pandoc and knitR with Sphinx<a class="headerlink" href="#using-pandoc-and-knitr-with-sphinx" title="Permalink to this headline">¶</a></h1>
+<p>This is a short example illustrating how to use <tt class="docutils literal"><span class="pre">knitr</span></tt> with
+<tt class="docutils literal"><span class="pre">pandoc</span></tt> to write a single document in <tt class="docutils literal"><span class="pre">markdown</span></tt> and have it
+rendered in multiple formats, especially <tt class="docutils literal"><span class="pre">pdf</span></tt> and <tt class="docutils literal"><span class="pre">html</span></tt>. For the
+purposes of illustration, I have chosen two code chunks, one generating
+a plot and the other generating a table to illustrate the power of
+<tt class="docutils literal"><span class="pre">pandoc</span></tt> + <tt class="docutils literal"><span class="pre">knitr</span></tt>.</p>
+<p>We first need to tell <tt class="docutils literal"><span class="pre">knitr</span></tt> to render the output of code chunks in
+the <tt class="docutils literal"><span class="pre">gfm</span></tt> format, which <tt class="docutils literal"><span class="pre">pandoc</span></tt> will understand.</p>
+<p>The chunk below is a plot chunk. You need to have the package
+<tt class="docutils literal"><span class="pre">ggplot2</span></tt> installed for it to work.</p>
+<div class="highlight-r"><div class="highlight"><pre>library<span class="p">(</span>ggplot2<span class="p">)</span>
+qplot<span class="p">(</span>wt<span class="p">,</span> mpg<span class="p">,</span> data <span class="o">=</span> mtcars<span class="p">)</span>
+</pre></div>
+</div>
+<div class="figure align-center">
+<img alt="plot of chunk plot-chunk" src="_images/plot-chunk.png" />
+<p class="caption">plot of chunk plot-chunk</p>
+</div>
+<p>The second chunk produces a table. You need to have the package
+<tt class="docutils literal"><span class="pre">ascii</span></tt> installed for this to work.</p>
+<div class="highlight-r"><div class="highlight"><pre>library<span class="p">(</span>ascii<span class="p">)</span>
+x <span class="o">&lt;-</span> head<span class="p">(</span>mtcars<span class="p">[,</span> <span class="m">1</span>:<span class="m">5</span><span class="p">])</span>
+options<span class="p">(</span>asciiType <span class="o">=</span> <span class="s">&quot;pandoc&quot;</span><span class="p">)</span>
+ascii<span class="p">(</span>x<span class="p">)</span>
+</pre></div>
+</div>
+<table border="1" class="docutils">
+<colgroup>
+<col width="27%" />
+<col width="14%" />
+<col width="14%" />
+<col width="16%" />
+<col width="13%" />
+<col width="16%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">&nbsp;</th>
+<th class="head"><strong>mpg</strong></th>
+<th class="head"><strong>cyl</strong></th>
+<th class="head"><strong>disp</strong></th>
+<th class="head"><strong>hp</strong></th>
+<th class="head"><strong>drat</strong></th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Mazda RX4</td>
+<td>21.00</td>
+<td>6.00</td>
+<td>160.00</td>
+<td>110.00</td>
+<td>3.90</td>
+</tr>
+<tr class="row-odd"><td>Mazda RX4 Wag</td>
+<td>21.00</td>
+<td>6.00</td>
+<td>160.00</td>
+<td>110.00</td>
+<td>3.90</td>
+</tr>
+<tr class="row-even"><td>Datsun 710</td>
+<td>22.80</td>
+<td>4.00</td>
+<td>108.00</td>
+<td>93.00</td>
+<td>3.85</td>
+</tr>
+<tr class="row-odd"><td>Hornet 4 Drive</td>
+<td>21.40</td>
+<td>6.00</td>
+<td>258.00</td>
+<td>110.00</td>
+<td>3.08</td>
+</tr>
+<tr class="row-even"><td>Hornet Sportabout</td>
+<td>18.70</td>
+<td>8.00</td>
+<td>360.00</td>
+<td>175.00</td>
+<td>3.15</td>
+</tr>
+<tr class="row-odd"><td>Valiant</td>
+<td>18.10</td>
+<td>6.00</td>
+<td>225.00</td>
+<td>105.00</td>
+<td>2.76</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="new.html"
+                        title="previous chapter">First Steps with Sphinx</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="intro.html"
+                        title="next chapter">Statistical Computing Seminars: Graphics in R I</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/source.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="intro.html" title="Statistical Computing Seminars: Graphics in R I"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="new.html" title="First Steps with Sphinx"
+             >previous</a> |</li>
+        <li><a href="index.html">sphinx-test 0.01 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+<div class="footer">
+    &copy; Copyright 2012, Ramnath Vaidyanathan.
+  Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+  <br />Theme based on <a href="http://readthedocs.org/">Read The Docs</a>
+
+</div>
+
+
+
+
+
+  </body>
+</html>

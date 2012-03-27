@@ -1,0 +1,482 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+
+    <title>Statistical Computing Seminars: Graphics in R I &mdash; sphinx-test 0.01 documentation</title>
+
+<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;"/>
+
+
+    
+    <link rel="stylesheet" href="_static/rtd.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.01',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="_static/searchtools.js"></script>
+    <link rel="top" title="sphinx-test 0.01 documentation" href="index.html" />
+    <link rel="prev" title="Using Pandoc and knitR with Sphinx" href="source.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="source.html" title="Using Pandoc and knitR with Sphinx"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">sphinx-test 0.01 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="statistical-computing-seminars-graphics-in-r-i">
+<h1>Statistical Computing Seminars: Graphics in R I<a class="headerlink" href="#statistical-computing-seminars-graphics-in-r-i" title="Permalink to this headline">¶</a></h1>
+<p>R is often praised for its graphics. I think R is good at graphics for
+the same reason it is good at anything else&#8212;it&#8217;s flexible. People just
+like to customize graphs more than they like to customize statistical
+models. But as my old boss used to say, &#8220;there is no free lunch&#8221;. R is
+powerful and flexible but using it takes time. R is, strictly speaking,
+not a statistical package; it is a language and environment for
+statistical computing. Finally, a word of advice, you will have a lot
+more fun if you start playing around with R when you do not need it then
+if you start when you need to accomplish task X by some deadline.</p>
+<div class="section" id="graphics-systems-in-r">
+<h2>Graphics systems in R<a class="headerlink" href="#graphics-systems-in-r" title="Permalink to this headline">¶</a></h2>
+<p>Many people have outlined the differents graphics systems in R. What
+follows is not entirely accurate, but hopefully is a useful way to
+think.</p>
+<p><strong>Traditional (&#8220;base&#8221;) Graphics</strong></p>
+<p>Grid Graphics</p>
+<ul class="simple">
+<li>lattice: implementation of trellis plots (William Cleveland)</li>
+<li>ggplot2: implementatioon of the Grammar of Graphics (Leland
+Wilkinson)</li>
+</ul>
+<p>Other-useful-but-less-common-or-mainstream stuff</p>
+<p>This seminar focuses on traditional graphics. It is part of a series
+that covers traditional, ggplot2, and lattice.</p>
+</div>
+<div class="section" id="graphs-covered">
+<h2>Graphs covered<a class="headerlink" href="#graphs-covered" title="Permalink to this headline">¶</a></h2>
+<p>This page covers a few basic graphs:</p>
+<ul class="simple">
+<li><a class="reference external" href="#boxplot">Box Plots</a></li>
+<li><a class="reference external" href="#histogram">Histograms</a></li>
+<li><a class="reference external" href="#density">Density Plots</a></li>
+<li><a class="reference external" href="#functions">Plots of Functions and Complex Text</a></li>
+<li><a class="reference external" href="#scatter">Scatter Plots</a></li>
+<li><a class="reference external" href="#barplot">*Bar Plots*</a></li>
+<li><a class="reference external" href="#piechart">*Piecharts*</a></li>
+</ul>
+<p>I put bar plots and piecharts in italics and at the end because I belive
+they are overused and generally inefficient at communicating data.</p>
+</div>
+<div class="section" id="id1">
+<h2>Box Plots<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>Precise implementations vary, but essentially box plots have a box with
+the top being the upper quartile, the bottom being the lower quartile, a
+line for the median somehwere inside the box, and &#8220;whiskers&#8221; extending
+the range of the data. R also has the option to add &#8220;notches&#8221;, these are
+based off the interquartile range (IQR) and are meant to be somewhat
+like a confidence interval around the medians. We will work with a
+simulated data set.</p>
+<div class="highlight-r"><div class="highlight"><pre>set.seed<span class="p">(</span><span class="m">1</span><span class="p">)</span>  <span class="c1"># so this is reproducible</span>
+<span class="c1">## data frame with variable, xn ~N(0, 1)</span>
+d <span class="o">&lt;-</span> data.frame<span class="p">(</span>xn <span class="o">=</span> rnorm<span class="p">(</span><span class="m">1000</span><span class="p">,</span> mean <span class="o">=</span> <span class="m">0</span><span class="p">,</span> sd <span class="o">=</span> <span class="m">1</span><span class="p">))</span>
+
+<span class="c1">## basic boxplot---looks nice</span>
+boxplot<span class="p">(</span>d<span class="p">$</span>xn<span class="p">)</span>
+
+<span class="c1">## with the notch</span>
+boxplot<span class="p">(</span>d<span class="p">$</span>xn<span class="p">,</span> notch <span class="o">=</span> <span class="kc">TRUE</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We can see that there are a few &#8220;outliers&#8221; (the points beyond the
+whiskers of the boxplot), but given normal data, it looks very nice.
+Next we will look at a binomial distribution with 5 trials (like an in
+class pop quiz, with 5 true/false questions). We also add a variable,
+attend, that indicates whether students attended the last class.</p>
+<div class="highlight-r"><div class="highlight"><pre>d<span class="p">$</span>attend <span class="o">&lt;-</span> factor<span class="p">(</span>rep<span class="p">(</span><span class="m">0</span>:<span class="m">1</span><span class="p">,</span> each <span class="o">=</span> <span class="m">500</span><span class="p">),</span> labels <span class="o">=</span> c<span class="p">(</span><span class="s">&quot;absent&quot;</span><span class="p">,</span>
+    <span class="s">&quot;present&quot;</span><span class="p">))</span>
+<span class="c1">## set seed to make reproducible and add to boxplot</span>
+set.seed<span class="p">(</span><span class="m">1</span><span class="p">)</span>
+<span class="c1">## xb (first 500) ~ B(5, .5) and xb (last 500) ~ B(5,</span>
+<span class="c1">#   .8)</span>
+d<span class="p">$</span>xb <span class="o">&lt;-</span> c<span class="p">(</span>rbinom<span class="p">(</span><span class="m">500</span><span class="p">,</span> <span class="m">5</span><span class="p">,</span> <span class="m">0.5</span><span class="p">),</span> rbinom<span class="p">(</span><span class="m">500</span><span class="p">,</span> <span class="m">5</span><span class="p">,</span>
+    <span class="m">0.8</span><span class="p">))</span>
+
+<span class="c1">## notched box plot as before</span>
+boxplot<span class="p">(</span>d<span class="p">$</span>xb<span class="p">,</span> notch <span class="o">=</span> <span class="kc">TRUE</span><span class="p">)</span>
+
+<span class="c1">## we can also use a formula interface to get separate</span>
+<span class="c1">#   plots by attendance</span>
+boxplot<span class="p">(</span>xb ~ attend<span class="p">,</span> data <span class="o">=</span> d<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id2">
+<h2>Histograms<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<p>Box plots are nice and show at least 5 pieces of information for each
+variable, but it is not always easy to tell the distribution of a
+variable from them. To look at distributions, we can try a histogram.
+Histograms bin data by counting the number of observations falling
+within a certain range, and present the frequency (or probability).</p>
+<div class="highlight-r"><div class="highlight"><pre><span class="c1">## basic histogram</span>
+hist<span class="p">(</span>d<span class="p">$</span>xn<span class="p">)</span>
+
+<span class="c1">## increase the number of bins (increases resolution)</span>
+hist<span class="p">(</span>d<span class="p">$</span>xn<span class="p">,</span> breaks <span class="o">=</span> <span class="m">25</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Instead of plotting the frequencies, we can plot the probabilities. We
+will also give it better labels. Greek letters (mu and sigma) can be
+added by placing them in an <strong>expression()</strong>. This works for titles,
+axis labels, and text directly added to plots.</p>
+<div class="highlight-r"><div class="highlight"><pre>hist<span class="p">(</span>d<span class="p">$</span>xn<span class="p">,</span> breaks <span class="o">=</span> <span class="m">25</span><span class="p">,</span> prob <span class="o">=</span> <span class="kc">TRUE</span><span class="p">,</span> main <span class="o">=</span> expression<span class="p">(</span>paste<span class="p">(</span><span class="s">&quot;Histogram of ~N(&quot;</span><span class="p">,</span>
+    mu<span class="p">,</span> <span class="s">&quot;=0, &quot;</span><span class="p">,</span> sigma<span class="p">,</span> <span class="s">&quot;=1)&quot;</span><span class="p">)),</span> xlab <span class="o">=</span> <span class="s">&quot;X&quot;</span><span class="p">)</span>
+
+
+<span class="c1">## Now examining the &#39;quiz&#39; data</span>
+hist<span class="p">(</span>d<span class="p">$</span>xb<span class="p">,</span> main <span class="o">=</span> <span class="s">&quot;Pop Quiz Results&quot;</span><span class="p">,</span> xlab <span class="o">=</span> <span class="s">&quot;Number Correct&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Looking at the histogram, <tt class="docutils literal"><span class="pre">290</span></tt> students got 4/5 questions correct.</p>
+</div>
+<div class="section" id="id3">
+<h2>Density plots<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<p>Density plots are great to follow histograms because you can actually
+plot them right on top of a histogram if it is of porbabilities instead
+of frequencies. Density plots use a smoothing kernel (typically
+gaussian).</p>
+<div class="highlight-r"><div class="highlight"><pre><span class="c1">## default density plot</span>
+plot<span class="p">(</span>density<span class="p">(</span>d<span class="p">$</span>xn<span class="p">))</span>
+
+
+<span class="c1">## plot a histogram and add density plot on top</span>
+<span class="c1">## setting a smaller bandwidth (.1) than before</span>
+<span class="c1">## makes it more &#39;jagged&#39;</span>
+hist<span class="p">(</span>d<span class="p">$</span>xn<span class="p">,</span> breaks <span class="o">=</span> <span class="m">30</span><span class="p">,</span> prob <span class="o">=</span> <span class="kc">TRUE</span><span class="p">)</span>
+lines<span class="p">(</span>density<span class="p">(</span>d<span class="p">$</span>xn<span class="p">,</span> bw <span class="o">=</span> <span class="m">0.1</span><span class="p">))</span>
+
+
+<span class="c1">## bandwidth of .4</span>
+hist<span class="p">(</span>d<span class="p">$</span>xn<span class="p">,</span> breaks <span class="o">=</span> <span class="m">30</span><span class="p">,</span> prob <span class="o">=</span> <span class="kc">TRUE</span><span class="p">)</span>
+lines<span class="p">(</span>density<span class="p">(</span>d<span class="p">$</span>xn<span class="p">,</span> bw <span class="o">=</span> <span class="m">0.4</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>The bandwidths determine the degree of smoothing being done. Higher
+bandwidths will be &#8220;less true&#8221; to the data, but creating smoother
+density plots. Next we show the quiz data and also demonstrate the use
+of the <strong>with</strong> function, to avoid having to keep typing the dataset
+name.</p>
+<div class="highlight-r"><div class="highlight"><pre>with<span class="p">(</span>d<span class="p">,</span> <span class="p">{</span>
+    hist<span class="p">(</span>xb<span class="p">,</span> breaks <span class="o">=</span> <span class="m">30</span><span class="p">,</span> prob <span class="o">=</span> <span class="kc">TRUE</span><span class="p">,</span> main <span class="o">=</span> <span class="s">&quot;Histogram of Quiz Scores&quot;</span><span class="p">,</span>
+        xlab <span class="o">=</span> <span class="s">&quot;Number of Questions Correct&quot;</span><span class="p">)</span>
+    lines<span class="p">(</span>density<span class="p">(</span>xb<span class="p">,</span> bw <span class="o">=</span> <span class="m">0.2</span><span class="p">),</span> lwd <span class="o">=</span> <span class="m">2</span><span class="p">,</span> lty <span class="o">=</span> <span class="m">1</span><span class="p">)</span>
+    lines<span class="p">(</span>density<span class="p">(</span>xb<span class="p">,</span> bw <span class="o">=</span> <span class="m">1</span><span class="p">),</span> lwd <span class="o">=</span> <span class="m">2</span><span class="p">,</span> lty <span class="o">=</span> <span class="m">2</span><span class="p">)</span>
+<span class="p">})</span>
+</pre></div>
+</div>
+<p>With discrete data like this, the smoothing is not very effective as it
+does little to help us understand the data. The trend is better shown
+with just the bars. To end our demonstrations of graphs for
+distributions, we will add a &#8220;rug&#8221; to the histograms and density plots.
+The rug is simply a verticle line for every observation&#8212;very true to
+the data, but imposible to see multiple observations with the same
+value. The rug is nice to get insight about the more rare values in the
+extremes.</p>
+<div class="highlight-r"><div class="highlight"><pre>with<span class="p">(</span>d<span class="p">,</span> <span class="p">{</span>
+    hist<span class="p">(</span>xn<span class="p">,</span> prob <span class="o">=</span> <span class="kc">TRUE</span><span class="p">,</span> main <span class="o">=</span> <span class="s">&quot;Histogram with Density and Rug&quot;</span><span class="p">)</span>
+    lines<span class="p">(</span>density<span class="p">(</span>xn<span class="p">,</span> bw <span class="o">=</span> <span class="m">0.1</span><span class="p">),</span> lwd <span class="o">=</span> <span class="m">2</span><span class="p">,</span> lty <span class="o">=</span> <span class="m">1</span><span class="p">)</span>
+    lines<span class="p">(</span>density<span class="p">(</span>xn<span class="p">,</span> bw <span class="o">=</span> <span class="m">0.5</span><span class="p">),</span> lwd <span class="o">=</span> <span class="m">2</span><span class="p">,</span> lty <span class="o">=</span> <span class="m">2</span><span class="p">)</span>
+    rug<span class="p">(</span>xn<span class="p">)</span>
+<span class="p">})</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id4">
+<h2>Plots of functions and complex text<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
+<p>Sometimes it is nice to plot a function directly. Particular for
+instructional purposes. Using the <strong>curve</strong> function in R, you can plot
+arbitrary functions evaluated over a range of values, as long as the
+function takes a vector, x, and returns a vector the same length as x.
+Two common examples in statistics are probability density functions and
+cumulative distribution functions. When you are plotting a function, it
+also makes sense to show the formula being plotted. This section shows
+how to plot functions and how to add complex text (formulae) to a plot.</p>
+<p>The builtin function <strong>dnorm</strong> is plotted from -3 to 3. The interesting
+part is adding the <strong>text</strong>. The first argument is the location on the x
+axis, the second the location on the y axis. Next is the text to be
+plotted. In this case, it is an expression. Plotting math in R is
+similar to using LaTeX. <strong>frac</strong> takes two arguments, the first is the
+top of the fraction, the second is the bottom. Greek letter names are
+automatically converted to their symbol form. Finally, the text is made
+1.2 times bigger using the <strong>cex</strong> (character expansion) argument.</p>
+<div class="highlight-r"><div class="highlight"><pre><span class="c1">## plot the function from -3 to 3</span>
+curve<span class="p">(</span>dnorm<span class="p">,</span> from <span class="o">=</span> <span class="m">-3</span><span class="p">,</span> to <span class="o">=</span> <span class="m">3</span><span class="p">,</span> n <span class="o">=</span> <span class="m">1000</span><span class="p">,</span> xlab <span class="o">=</span> <span class="s">&quot;x&quot;</span><span class="p">,</span>
+    ylab <span class="o">=</span> expression<span class="p">(</span>P<span class="p">(</span>x<span class="p">)),</span> main <span class="o">=</span> <span class="s">&quot;Normal Probability Density Function&quot;</span><span class="p">)</span>
+<span class="c1">## add the formula to the plot</span>
+text<span class="p">(</span><span class="m">-2</span><span class="p">,</span> <span class="m">0.3</span><span class="p">,</span> expression<span class="p">(</span>P<span class="p">(</span>x<span class="p">)</span> <span class="o">==</span> paste<span class="p">(</span>frac<span class="p">(</span><span class="m">1</span><span class="p">,</span>
+    sqrt<span class="p">(</span><span class="m">2</span> <span class="o">*</span> pi <span class="o">*</span> sigma<span class="o">^</span><span class="m">2</span><span class="p">)),</span> <span class="s">&quot; &quot;</span><span class="p">,</span> e<span class="o">^</span><span class="p">{</span>
+    frac<span class="p">(</span><span class="o">-</span><span class="p">(</span>x <span class="o">-</span> mu<span class="p">)</span><span class="o">^</span><span class="m">2</span><span class="p">,</span> <span class="m">2</span> <span class="o">*</span> sigma<span class="o">^</span><span class="m">2</span><span class="p">)</span>
+<span class="p">})),</span> cex <span class="o">=</span> <span class="m">1.2</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Here is another example where we first define a function to plot the
+cumulative percent of normal density of x. This is used in <strong>curve</strong> to
+create the plot. This formula demonstrates how to add infinity as well
+as integrals.</p>
+<div class="highlight-r"><div class="highlight"><pre><span class="c1">## define the function</span>
+normCDF <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>x<span class="p">)</span> <span class="p">{</span>
+    x <span class="o">&lt;-</span> dnorm<span class="p">(</span>x<span class="p">)</span>
+    cumsum<span class="p">(</span>x<span class="p">)</span><span class="o">/</span>sum<span class="p">(</span>x<span class="p">)</span>
+<span class="p">}</span>
+<span class="c1">## plot the function from -3 to 3</span>
+curve<span class="p">(</span>normCDF<span class="p">,</span> from <span class="o">=</span> <span class="m">-3</span><span class="p">,</span> to <span class="o">=</span> <span class="m">3</span><span class="p">,</span> n <span class="o">=</span> <span class="m">1000</span><span class="p">,</span> type <span class="o">=</span> <span class="s">&quot;l&quot;</span><span class="p">,</span>
+    col <span class="o">=</span> <span class="s">&quot;blue&quot;</span><span class="p">,</span> xlab <span class="o">=</span> <span class="s">&quot;x&quot;</span><span class="p">,</span> ylab <span class="o">=</span> expression<span class="p">(</span>phi<span class="p">(</span>x<span class="p">)),</span>
+    main <span class="o">=</span> <span class="s">&quot;Standard Normal Cumulative Distribution Function&quot;</span><span class="p">)</span>
+<span class="c1">## add the formula to the plot</span>
+text<span class="p">(</span><span class="m">-1.5</span><span class="p">,</span> <span class="m">0.7</span><span class="p">,</span> expression<span class="p">(</span>phi<span class="p">(</span>x<span class="p">)</span> <span class="o">==</span> paste<span class="p">(</span>frac<span class="p">(</span><span class="m">1</span><span class="p">,</span>
+    sqrt<span class="p">(</span><span class="m">2</span> <span class="o">*</span> pi<span class="p">)),</span> <span class="s">&quot; &quot;</span><span class="p">,</span> integral<span class="p">(</span>e<span class="o">^</span><span class="p">(</span><span class="o">-</span>t<span class="o">^</span><span class="m">2</span><span class="o">/</span><span class="m">2</span><span class="p">)</span> <span class="o">*</span> dt<span class="p">,</span> <span class="o">-</span>infinity<span class="p">,</span>
+    x<span class="p">))),</span> cex <span class="o">=</span> <span class="m">1.2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id5">
+<h2>Scatter plots<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
+<p>Scatter plots may be the most common way to plot the relationship
+between two variables. In R, scatter plots are made using the <strong>plot</strong>
+function, which has a lot of options. We will only scratch the surface
+now, but you can find out more from the documentation, <strong>?plot</strong> and
+<strong>?plot.default</strong>.</p>
+<div class="highlight-r"><div class="highlight"><pre><span class="c1">## what happens if you only plot one variable?</span>
+plot<span class="p">(</span>d<span class="p">$</span>xn<span class="p">)</span>  <span class="c1"># index on the x axis</span>
+
+
+<span class="c1">## create some data correlated with xn</span>
+set.seed<span class="p">(</span><span class="m">2</span><span class="p">)</span>
+d<span class="p">$</span>xnr <span class="o">&lt;-</span> <span class="m">0.4</span> <span class="o">*</span> d<span class="p">$</span>xn <span class="o">+</span> rnorm<span class="p">(</span><span class="m">1000</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="m">1</span><span class="p">)</span>
+plot<span class="p">(</span>x <span class="o">=</span> d<span class="p">$</span>xn<span class="p">,</span> y <span class="o">=</span> d<span class="p">$</span>xnr<span class="p">)</span>
+</pre></div>
+</div>
+<p>Up until now, we have not really made too many changes to the default
+settings. Now we will show many different ways to customize graphs.
+Although these are shown for scatter plots, many of the same arguments
+can be used for other plotting functions. The <strong>pch</strong> argument adjusts
+the <strong>p**lotting **ch**character. The **col**our argument adjusts the
+point colour. **xlim**its controls the lower and upper limit of the X
+axis (often +/- a twiddle value). **xlab**el sets the label for the X
+axis. **xaxt</strong> controls the style or turns off (n) the <strong>X</strong> <a href="#id6"><span class="problematic" id="id7">**</span></a>ax**is
+<a href="#id8"><span class="problematic" id="id9">**</span></a>t**icks.</p>
+<div class="highlight-r"><div class="highlight"><pre>plot<span class="p">(</span>x <span class="o">=</span> d<span class="p">$</span>xn<span class="p">,</span> y <span class="o">=</span> d<span class="p">$</span>xnr<span class="p">,</span> pch <span class="o">=</span> <span class="m">18</span><span class="p">,</span> col <span class="o">=</span> <span class="s">&quot;blue&quot;</span><span class="p">,</span>
+    xlim <span class="o">=</span> c<span class="p">(</span><span class="m">-4</span><span class="p">,</span> <span class="m">4</span><span class="p">),</span> ylim <span class="o">=</span> c<span class="p">(</span><span class="m">-2</span><span class="p">,</span> <span class="m">2</span><span class="p">),</span> xlab <span class="o">=</span> <span class="s">&quot;Variable 1&quot;</span><span class="p">,</span>
+    ylab <span class="o">=</span> <span class="s">&quot;Variable 2&quot;</span><span class="p">,</span> main <span class="o">=</span> <span class="s">&quot;The Main Plot Title&quot;</span><span class="p">,</span> sub <span class="o">=</span> <span class="s">&quot;A Subtitle&quot;</span><span class="p">,</span>
+    xaxt <span class="o">=</span> <span class="s">&quot;n&quot;</span><span class="p">,</span> yaxt <span class="o">=</span> <span class="s">&quot;n&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Arguments that accept single values (e.g., <strong>pch</strong>) also often accept
+vectors that are the same length as the data. We can take advantage of
+this to adjust the plotting character and colour depending on
+attendance. The trick is to convert the &#8220;absent&#8221;, &#8220;present&#8221; data into
+numbers for the plotting character and colours. There are many ways to
+accomplish this. <strong>ifelse</strong> is one way. Attend is a factor and its
+levels are automatically used to select two colours (by default black
+and then red). We also show how this can be customized in various ways.</p>
+<div class="highlight-r"><div class="highlight"><pre><span class="c1">## with attend default colour</span>
+with<span class="p">(</span>d<span class="p">,</span> plot<span class="p">(</span>x <span class="o">=</span> xn<span class="p">,</span> y <span class="o">=</span> xnr<span class="p">,</span> pch <span class="o">=</span> ifelse<span class="p">(</span>attend <span class="o">==</span>
+    <span class="s">&quot;absent&quot;</span><span class="p">,</span> <span class="m">18</span><span class="p">,</span> <span class="m">17</span><span class="p">),</span> col <span class="o">=</span> attend<span class="p">))</span>
+
+
+<span class="c1">## customizing</span>
+with<span class="p">(</span>d<span class="p">,</span> plot<span class="p">(</span>x <span class="o">=</span> xn<span class="p">,</span> y <span class="o">=</span> xnr<span class="p">,</span> pch <span class="o">=</span> ifelse<span class="p">(</span>attend <span class="o">==</span>
+    <span class="s">&quot;absent&quot;</span><span class="p">,</span> <span class="m">18</span><span class="p">,</span> <span class="m">17</span><span class="p">),</span> col <span class="o">=</span> rainbow<span class="p">(</span><span class="m">2</span><span class="p">)[</span>attend<span class="p">]))</span>
+
+
+<span class="c1">## customizing</span>
+with<span class="p">(</span>d<span class="p">,</span> plot<span class="p">(</span>x <span class="o">=</span> xn<span class="p">,</span> y <span class="o">=</span> xnr<span class="p">,</span> pch <span class="o">=</span> ifelse<span class="p">(</span>attend <span class="o">==</span>
+    <span class="s">&quot;absent&quot;</span><span class="p">,</span> <span class="m">18</span><span class="p">,</span> <span class="m">17</span><span class="p">),</span> col <span class="o">=</span> heat.colors<span class="p">(</span><span class="m">2</span><span class="p">)[</span>attend<span class="p">]))</span>
+
+
+<span class="c1">## customizing</span>
+with<span class="p">(</span>d<span class="p">,</span> plot<span class="p">(</span>x <span class="o">=</span> xn<span class="p">,</span> y <span class="o">=</span> xnr<span class="p">,</span> pch <span class="o">=</span> ifelse<span class="p">(</span>attend <span class="o">==</span>
+    <span class="s">&quot;absent&quot;</span><span class="p">,</span> <span class="m">18</span><span class="p">,</span> <span class="m">17</span><span class="p">),</span> col <span class="o">=</span> ifelse<span class="p">(</span>attend <span class="o">==</span> <span class="s">&quot;absent&quot;</span><span class="p">,</span> <span class="s">&quot;blue&quot;</span><span class="p">,</span>
+    <span class="s">&quot;black&quot;</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id10">
+<h2>Bar plots<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h2>
+<p>Bar plots, are typically information impoverished. They use a lot of
+space to present a few values, probably easier to report exactly in a
+table or in text. Most often, barplots are anchored at 0, and the height
+of the bar indicates the mean of a variable.</p>
+<div class="highlight-r"><div class="highlight"><pre><span class="c1">## first example</span>
+barplot<span class="p">(</span>mean<span class="p">(</span>d<span class="p">$</span>xb<span class="p">),</span> ylab <span class="o">=</span> <span class="s">&quot;Quiz Grade&quot;</span><span class="p">,</span> xlab <span class="o">=</span> <span class="s">&quot;Overall Class&quot;</span><span class="p">)</span>
+
+<span class="c1">## mean broken down by attendance</span>
+g <span class="o">&lt;-</span> tapply<span class="p">(</span>d<span class="p">$</span>xb<span class="p">,</span> d<span class="p">$</span>attend<span class="p">,</span> FUN <span class="o">=</span> mean<span class="p">)</span>
+<span class="c1">## now create the bar plot</span>
+barplot<span class="p">(</span>g<span class="p">,</span> ylim <span class="o">=</span> c<span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">5</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>What do these graphs really tell us? Just that the mean of the absent
+group is <tt class="docutils literal"><span class="pre">2.47</span></tt> and the mean of the present group is <tt class="docutils literal"><span class="pre">3.958</span></tt>. An
+equivalent presentation would be:</p>
+<div class="highlight-r"><div class="highlight"><pre><span class="c1">## cex (character expansion) makes the points larger</span>
+plot<span class="p">(</span>x <span class="o">=</span> g<span class="p">,</span> pch <span class="o">=</span> <span class="m">18</span><span class="p">,</span> cex <span class="o">=</span> <span class="m">2</span><span class="p">,</span> ylim <span class="o">=</span> c<span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">5</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Without all the pointless shading for the bars (remember, only the tops
+of the bars convey information), the plot looks sparse. What are the
+alternatives? Well, for one, the boxplots we looked at earlier.
+Alternately, plot the real points and add the means. Because the outcome
+is discrete, we use <strong>jitter</strong> to add a some noise to get a better sense
+of the distribution.</p>
+<div class="highlight-r"><div class="highlight"><pre>with<span class="p">(</span>d<span class="p">,</span> <span class="p">{</span>
+    plot<span class="p">(</span>jitter<span class="p">(</span>as.numeric<span class="p">(</span>attend<span class="p">)),</span> xb<span class="p">,</span> xaxt <span class="o">=</span> <span class="s">&quot;n&quot;</span><span class="p">,</span> col <span class="o">=</span> <span class="s">&quot;blue&quot;</span><span class="p">,</span>
+        xlab <span class="o">=</span> <span class="s">&quot;Attendance&quot;</span><span class="p">,</span> ylab <span class="o">=</span> <span class="s">&quot;Quiz Score&quot;</span><span class="p">)</span>
+    points<span class="p">(</span>x <span class="o">=</span> c<span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">2</span><span class="p">),</span> y <span class="o">=</span> g<span class="p">,</span> col <span class="o">=</span> <span class="s">&quot;black&quot;</span><span class="p">,</span> pch <span class="o">=</span> <span class="m">18</span><span class="p">,</span> cex <span class="o">=</span> <span class="m">4</span><span class="p">)</span>
+    axis<span class="p">(</span><span class="m">1</span><span class="p">,</span> at <span class="o">=</span> c<span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">2</span><span class="p">),</span> labels <span class="o">=</span> names<span class="p">(</span>g<span class="p">))</span>
+<span class="p">})</span>
+</pre></div>
+</div>
+<p>This is probably not the visual display I would choose for these data,
+but at least you can see not only the means, but that there are people
+in the absent group who score 5 and people in the present that score 0,
+etc. Along the way, we used the <strong>points</strong> function to add points (the
+means) on top of an existing plot and added our own X axis to get the
+labels we wanted.</p>
+</div>
+<div class="section" id="id11">
+<h2>Piecharts<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h2>
+<p>Pie charts are another problematic type of graph. Why? The human
+perceptual system is lousy at accurately quantifying area.</p>
+<div class="highlight-r"><div class="highlight"><pre>g <span class="o">&lt;-</span> <span class="m">1</span>:<span class="m">4</span>
+names<span class="p">(</span>g<span class="p">)</span> <span class="o">&lt;-</span> letters<span class="p">[</span><span class="m">1</span>:<span class="m">4</span><span class="p">]</span>
+<span class="c1">## How are a, b, c, d growing?</span>
+pie<span class="p">(</span>g<span class="p">)</span>
+
+barplot<span class="p">(</span>g<span class="p">)</span>
+</pre></div>
+</div>
+<p>Our visual systems are able to detect small differences in lengths of
+lines, and we can quickly see from the bars that the difference between
+each bar is about equal. Similarly, in the graphs below, it is easy to
+tell that &#8220;b&#8221; is twice as high as &#8220;a&#8221;, but difficult to tell &#8220;b&#8221; has
+twice the area of &#8220;a&#8221;.</p>
+<div class="highlight-r"><div class="highlight"><pre>pie<span class="p">(</span>c<span class="p">(</span>a <span class="o">=</span> <span class="m">2</span><span class="p">,</span> b <span class="o">=</span> <span class="m">4</span><span class="p">))</span>
+
+barplot<span class="p">(</span>c<span class="p">(</span>a <span class="o">=</span> <span class="m">2</span><span class="p">,</span> b <span class="o">=</span> <span class="m">4</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
+<p>We looked at how to make plots in R using <strong>boxplot</strong>, <strong>hist</strong>,
+<strong>density</strong>, <strong>plot</strong>, <strong>barplot</strong>, <strong>pie</strong>, as wella s how to customize
+the colours, shapes, and labels. We briefly saw how to set our own axes.
+The next installment of this series will explore how to really customize
+plots from tweaking aspects of one plot like adding a legend to
+including multiple subplots in one bigger plot.</p>
+<p><tt class="docutils literal"><span class="pre">Built</span> <span class="pre">on:</span> <span class="pre">2012-03-20</span> <span class="pre">Under:</span> <span class="pre">R</span> <span class="pre">Under</span> <span class="pre">development</span> <span class="pre">(unstable)</span> <span class="pre">(2012-02-22</span> <span class="pre">r58461)</span> <span class="pre">With:</span> <span class="pre">knitr</span> <span class="pre">0.4</span></tt></p>
+<hr class="docutils" />
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Statistical Computing Seminars: Graphics in R I</a><ul>
+<li><a class="reference internal" href="#graphics-systems-in-r">Graphics systems in R</a></li>
+<li><a class="reference internal" href="#graphs-covered">Graphs covered</a></li>
+<li><a class="reference internal" href="#id1">Box Plots</a></li>
+<li><a class="reference internal" href="#id2">Histograms</a></li>
+<li><a class="reference internal" href="#id3">Density plots</a></li>
+<li><a class="reference internal" href="#id4">Plots of functions and complex text</a></li>
+<li><a class="reference internal" href="#id5">Scatter plots</a></li>
+<li><a class="reference internal" href="#id10">Bar plots</a></li>
+<li><a class="reference internal" href="#id11">Piecharts</a></li>
+<li><a class="reference internal" href="#summary">Summary</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="source.html"
+                        title="previous chapter">Using Pandoc and knitR with Sphinx</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/intro.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="source.html" title="Using Pandoc and knitR with Sphinx"
+             >previous</a> |</li>
+        <li><a href="index.html">sphinx-test 0.01 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+<div class="footer">
+    &copy; Copyright 2012, Ramnath Vaidyanathan.
+  Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+  <br />Theme based on <a href="http://readthedocs.org/">Read The Docs</a>
+
+</div>
+
+
+
+
+
+  </body>
+</html>
