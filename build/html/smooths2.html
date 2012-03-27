@@ -8,7 +8,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
 
-    <title>How can I explore different smooths in ggplot2? &mdash; sphinx-test 0.01 documentation</title>
+    <title>Types of smooths &mdash; sphinx-test 0.01 documentation</title>
 
 <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;"/>
 
@@ -53,10 +53,11 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="how-can-i-explore-different-smooths-in-ggplot2">
-<h1>How can I explore different smooths in ggplot2?<a class="headerlink" href="#how-can-i-explore-different-smooths-in-ggplot2" title="Permalink to this headline">¶</a></h1>
+  <p>R FAQ
+How can I explore different smooths in ggplot2?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</p>
 <div class="section" id="types-of-smooths">
-<h2>Types of smooths<a class="headerlink" href="#types-of-smooths" title="Permalink to this headline">¶</a></h2>
+<h1>Types of smooths<a class="headerlink" href="#types-of-smooths" title="Permalink to this headline">¶</a></h1>
 <p>Although points and lines of raw data can be helpful for exploring and
 understanding data, it can be difficult to tell what the overall trend
 or patterns are. Adding data summaries can make it much easier to see.
@@ -66,27 +67,26 @@ variable based on some model. To demonstrate this, we will use a data
 set that is built into <strong>R</strong>, the &#8216;<strong>mtcars</strong>&#8216; data. Specifically, we
 will look at the relationship between miles per gallon (<strong>mpg</strong>) and
 horsepower (<strong>hp</strong>). in 32 different cars.</p>
-<div class="highlight-r"><div class="highlight"><pre>head<span class="p">(</span>mtcars<span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">head</span><span class="p">(</span><span class="n">mtcars</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-r"><div class="highlight"><pre><span class="c1">##                    mpg cyl disp  hp drat    wt  qsec vs am gear carb</span>
-<span class="c1">## Mazda RX4         21.0   6  160 110 3.90 2.620 16.46  0  1    4    4</span>
-<span class="c1">## Mazda RX4 Wag     21.0   6  160 110 3.90 2.875 17.02  0  1    4    4</span>
-<span class="c1">## Datsun 710        22.8   4  108  93 3.85 2.320 18.61  1  1    4    1</span>
-<span class="c1">## Hornet 4 Drive    21.4   6  258 110 3.08 3.215 19.44  1  0    3    1</span>
-<span class="c1">## Hornet Sportabout 18.7   8  360 175 3.15 3.440 17.02  0  0    3    2</span>
-<span class="c1">## Valiant           18.1   6  225 105 2.76 3.460 20.22  1  0    3    1</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="c">##                    mpg cyl disp  hp drat    wt  qsec vs am gear carb</span>
+<span class="c">## Mazda RX4         21.0   6  160 110 3.90 2.620 16.46  0  1    4    4</span>
+<span class="c">## Mazda RX4 Wag     21.0   6  160 110 3.90 2.875 17.02  0  1    4    4</span>
+<span class="c">## Datsun 710        22.8   4  108  93 3.85 2.320 18.61  1  1    4    1</span>
+<span class="c">## Hornet 4 Drive    21.4   6  258 110 3.08 3.215 19.44  1  0    3    1</span>
+<span class="c">## Hornet Sportabout 18.7   8  360 175 3.15 3.440 17.02  0  0    3    2</span>
+<span class="c">## Valiant           18.1   6  225 105 2.76 3.460 20.22  1  0    3    1</span>
 </pre></div>
 </div>
-<div class="highlight-r"><div class="highlight"><pre>require<span class="p">(</span>ggplot2<span class="p">)</span>
-require<span class="p">(</span>methods<span class="p">)</span>
-p <span class="o">&lt;-</span> ggplot<span class="p">(</span>mtcars<span class="p">,</span> aes<span class="p">(</span>x <span class="o">=</span> hp<span class="p">,</span> y <span class="o">=</span> mpg<span class="p">))</span> <span class="o">+</span> geom_point<span class="p">()</span>
-print<span class="p">(</span>p<span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">require</span><span class="p">(</span><span class="n">ggplot2</span><span class="p">)</span>
+<span class="n">require</span><span class="p">(</span><span class="n">methods</span><span class="p">)</span>
+<span class="n">p</span> <span class="o">&lt;-</span> <span class="n">ggplot</span><span class="p">(</span><span class="n">mtcars</span><span class="p">,</span> <span class="n">aes</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">hp</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">mpg</span><span class="p">))</span> <span class="o">+</span> <span class="n">geom_point</span><span class="p">()</span>
+<span class="k">print</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="figure align-center">
-<img alt="plot of chunk mtcars" src="_images/mtcars.png" />
-<p class="caption">plot of chunk mtcars</p>
+<img alt="plot of chunk mtcars" src="_images/mtcars.svg" /><p class="caption">plot of chunk mtcars</p>
 </div>
 <p>One thing to notice is that into the &#8216;<strong>p</strong>&#8216; object, we saved both the
 basic plot setup and the request to add points. This saves typing down
@@ -94,45 +94,37 @@ the road if we know we always want points plotted in our graph. A quick
 visual of the data indicates the relationship may not be linear. This is
 confirmed when we look at a linear smooth. The fit is poor at the
 extremes.</p>
-<div class="highlight-r"><div class="highlight"><pre>p <span class="o">+</span> stat_smooth<span class="p">(</span>method <span class="o">=</span> <span class="s">&quot;lm&quot;</span><span class="p">,</span> formula <span class="o">=</span> y ~ x<span class="p">,</span>
-    size <span class="o">=</span> <span class="m">1</span><span class="p">)</span>
-</pre></div>
+<div class="highlight-python"><pre>p + stat_smooth(method = "lm", formula = y ~ x,
+    size = 1)</pre>
 </div>
 <div class="figure align-center">
-<img alt="plot of chunk linear-fit" src="_images/linear-fit.png" />
-<p class="caption">plot of chunk linear-fit</p>
+<img alt="plot of chunk linear-fit" src="_images/linear-fit.svg" /><p class="caption">plot of chunk linear-fit</p>
 </div>
 <p>To get a sense of something like the mean miles per gallon at every
 level of horsepower, we can instead use a locally weighted regression.</p>
-<div class="highlight-r"><div class="highlight"><pre>p <span class="o">+</span> stat_smooth<span class="p">(</span>method <span class="o">=</span> <span class="s">&quot;loess&quot;</span><span class="p">,</span> formula <span class="o">=</span> y ~
-    x<span class="p">,</span> size <span class="o">=</span> <span class="m">1</span><span class="p">)</span>
-</pre></div>
+<div class="highlight-python"><pre>p + stat_smooth(method = "loess", formula = y ~
+    x, size = 1)</pre>
 </div>
 <div class="figure align-center">
-<img alt="plot of chunk local-wt-reg" src="_images/local-wt-reg.png" />
-<p class="caption">plot of chunk local-wt-reg</p>
+<img alt="plot of chunk local-wt-reg" src="_images/local-wt-reg.svg" /><p class="caption">plot of chunk local-wt-reg</p>
 </div>
 <p>Looking at the fit, it seems a quadratic function might be a good
 approximation. We can go back to a linear model, but change the formula
 to include a squared term for x (which is horse power here).</p>
-<div class="highlight-r"><div class="highlight"><pre>p <span class="o">+</span> stat_smooth<span class="p">(</span>method <span class="o">=</span> <span class="s">&quot;lm&quot;</span><span class="p">,</span> formula <span class="o">=</span> y ~ x <span class="o">+</span>
-    I<span class="p">(</span>x<span class="o">^</span><span class="m">2</span><span class="p">),</span> size <span class="o">=</span> <span class="m">1</span><span class="p">)</span>
-</pre></div>
+<div class="highlight-python"><pre>p + stat_smooth(method = "lm", formula = y ~ x +
+    I(x^2), size = 1)</pre>
 </div>
 <div class="figure align-center">
-<img alt="plot of chunk quad-fun-approx" src="_images/quad-fun-approx.png" />
-<p class="caption">plot of chunk quad-fun-approx</p>
+<img alt="plot of chunk quad-fun-approx" src="_images/quad-fun-approx.svg" /><p class="caption">plot of chunk quad-fun-approx</p>
 </div>
 <p>We could achieve the same results using orthogonal polynomials, in this
 case with a second order (quadratic) polynomial. The advantage is that
 the poly() function can easily fit polynomials of arbitrary degree</p>
-<div class="highlight-r"><div class="highlight"><pre>p <span class="o">+</span> stat_smooth<span class="p">(</span>method <span class="o">=</span> <span class="s">&quot;lm&quot;</span><span class="p">,</span> formula <span class="o">=</span> y ~ poly<span class="p">(</span>x<span class="p">,</span>
-    <span class="m">2</span><span class="p">),</span> size <span class="o">=</span> <span class="m">1</span><span class="p">)</span>
-</pre></div>
+<div class="highlight-python"><pre>p + stat_smooth(method = "lm", formula = y ~ poly(x,
+    2), size = 1)</pre>
 </div>
 <div class="figure align-center">
-<img alt="plot of chunk polynomial-fit" src="_images/polynomial-fit.png" />
-<p class="caption">plot of chunk polynomial-fit</p>
+<img alt="plot of chunk polynomial-fit" src="_images/polynomial-fit.svg" /><p class="caption">plot of chunk polynomial-fit</p>
 </div>
 <p>Another flexible aspect of the smooths is that it can use many different
 modelling functions as long as they follow some common conventions. This
@@ -141,78 +133,66 @@ the sake of demonstration, we will try a generalized additive model
 (GAM) from the &#8216;<strong>mgcv</strong>&#8216; package with a smooth on the x predictor
 variable. First we load the required package, and then show how it is
 easily used inside our graph.</p>
-<div class="highlight-r"><div class="highlight"><pre>require<span class="p">(</span>mgcv<span class="p">)</span>
-p <span class="o">+</span> stat_smooth<span class="p">(</span>method <span class="o">=</span> <span class="s">&quot;gam&quot;</span><span class="p">,</span> formula <span class="o">=</span> y ~
-    s<span class="p">(</span>x<span class="p">),</span> size <span class="o">=</span> <span class="m">1</span><span class="p">)</span>
-</pre></div>
+<div class="highlight-python"><pre>require(mgcv)
+p + stat_smooth(method = "gam", formula = y ~
+    s(x), size = 1)</pre>
 </div>
 <div class="figure align-center">
-<img alt="plot of chunk gams" src="_images/gams.png" />
-<p class="caption">plot of chunk gams</p>
+<img alt="plot of chunk gams" src="_images/gams.svg" /><p class="caption">plot of chunk gams</p>
 </div>
 <p>The GAM with a smooth seems to fit the data better than the straight
 line did. We could also customize the basis dimension. Arbitrarily, we
 choose 3.</p>
-<div class="highlight-r"><div class="highlight"><pre>p <span class="o">+</span> stat_smooth<span class="p">(</span>method <span class="o">=</span> <span class="s">&quot;gam&quot;</span><span class="p">,</span> formula <span class="o">=</span> y ~
-    s<span class="p">(</span>x<span class="p">,</span> k <span class="o">=</span> <span class="m">3</span><span class="p">),</span> size <span class="o">=</span> <span class="m">1</span><span class="p">)</span>
-</pre></div>
+<div class="highlight-python"><pre>p + stat_smooth(method = "gam", formula = y ~
+    s(x, k = 3), size = 1)</pre>
 </div>
 <div class="figure align-center">
-<img alt="plot of chunk custom-gam" src="_images/custom-gam.png" />
-<p class="caption">plot of chunk custom-gam</p>
+<img alt="plot of chunk custom-gam" src="_images/custom-gam.svg" /><p class="caption">plot of chunk custom-gam</p>
 </div>
 <p>If we wanted to directly compare, we could add multiple smooths and
 colour them to see which we like best. By default each smooth would
 include shaded standard errors, which would be messy so we turn them
 off.</p>
-<div class="highlight-r"><div class="highlight"><pre>p <span class="o">+</span> stat_smooth<span class="p">(</span>method <span class="o">=</span> <span class="s">&quot;lm&quot;</span><span class="p">,</span> formula <span class="o">=</span> y ~ x<span class="p">,</span>
-    size <span class="o">=</span> <span class="m">1</span><span class="p">,</span> se <span class="o">=</span> <span class="kc">FALSE</span><span class="p">,</span> colour <span class="o">=</span> <span class="s">&quot;black&quot;</span><span class="p">)</span> <span class="o">+</span> stat_smooth<span class="p">(</span>method <span class="o">=</span> <span class="s">&quot;lm&quot;</span><span class="p">,</span>
-    formula <span class="o">=</span> y ~ x <span class="o">+</span> I<span class="p">(</span>x<span class="o">^</span><span class="m">2</span><span class="p">),</span> size <span class="o">=</span> <span class="m">1</span><span class="p">,</span> se <span class="o">=</span> <span class="kc">FALSE</span><span class="p">,</span> colour <span class="o">=</span> <span class="s">&quot;blue&quot;</span><span class="p">)</span> <span class="o">+</span>
-    stat_smooth<span class="p">(</span>method <span class="o">=</span> <span class="s">&quot;loess&quot;</span><span class="p">,</span> formula <span class="o">=</span> y ~ x<span class="p">,</span> size <span class="o">=</span> <span class="m">1</span><span class="p">,</span>
-        se <span class="o">=</span> <span class="kc">FALSE</span><span class="p">,</span> colour <span class="o">=</span> <span class="s">&quot;red&quot;</span><span class="p">)</span> <span class="o">+</span> stat_smooth<span class="p">(</span>method <span class="o">=</span> <span class="s">&quot;gam&quot;</span><span class="p">,</span>
-    formula <span class="o">=</span> y ~ s<span class="p">(</span>x<span class="p">),</span> size <span class="o">=</span> <span class="m">1</span><span class="p">,</span> se <span class="o">=</span> <span class="kc">FALSE</span><span class="p">,</span> colour <span class="o">=</span> <span class="s">&quot;green&quot;</span><span class="p">)</span> <span class="o">+</span>
-    stat_smooth<span class="p">(</span>method <span class="o">=</span> <span class="s">&quot;gam&quot;</span><span class="p">,</span> formula <span class="o">=</span> y ~ s<span class="p">(</span>x<span class="p">,</span> k <span class="o">=</span> <span class="m">3</span><span class="p">),</span>
-        size <span class="o">=</span> <span class="m">1</span><span class="p">,</span> se <span class="o">=</span> <span class="kc">FALSE</span><span class="p">,</span> colour <span class="o">=</span> <span class="s">&quot;violet&quot;</span><span class="p">)</span>
-</pre></div>
+<div class="highlight-python"><pre>p + stat_smooth(method = "lm", formula = y ~ x,
+    size = 1, se = FALSE, colour = "black") + stat_smooth(method = "lm",
+    formula = y ~ x + I(x^2), size = 1, se = FALSE, colour = "blue") +
+    stat_smooth(method = "loess", formula = y ~ x, size = 1,
+        se = FALSE, colour = "red") + stat_smooth(method = "gam",
+    formula = y ~ s(x), size = 1, se = FALSE, colour = "green") +
+    stat_smooth(method = "gam", formula = y ~ s(x, k = 3),
+        size = 1, se = FALSE, colour = "violet")</pre>
 </div>
 <div class="figure align-center">
-<img alt="plot of chunk multiple-smooths" src="_images/multiple-smooths.png" />
-<p class="caption">plot of chunk multiple-smooths</p>
+<img alt="plot of chunk multiple-smooths" src="_images/multiple-smooths.svg" /><p class="caption">plot of chunk multiple-smooths</p>
 </div>
 <p>It is clear in this case that all the models except the strictly linear
 fit the data similarly. To distinguish which was &#8220;best&#8221; any further
 would likely require comparing model fit statistics.</p>
 <p>Smooths can also be fit separately by levels of another variable. This
 allows a sort of examination of &#8216;interactions&#8217; in the data.</p>
-<div class="highlight-r"><div class="highlight"><pre>ggplot<span class="p">(</span>mtcars<span class="p">,</span> aes<span class="p">(</span>x <span class="o">=</span> hp<span class="p">,</span> y <span class="o">=</span> mpg<span class="p">,</span> colour <span class="o">=</span> factor<span class="p">(</span>vs<span class="p">)))</span> <span class="o">+</span>
-    geom_point<span class="p">()</span> <span class="o">+</span> stat_smooth<span class="p">(</span>method <span class="o">=</span> <span class="s">&quot;lm&quot;</span><span class="p">,</span> formula <span class="o">=</span> y ~
-    x<span class="p">,</span> se <span class="o">=</span> <span class="kc">FALSE</span><span class="p">)</span>
-</pre></div>
+<div class="highlight-python"><pre>ggplot(mtcars, aes(x = hp, y = mpg, colour = factor(vs))) +
+    geom_point() + stat_smooth(method = "lm", formula = y ~
+    x, se = FALSE)</pre>
 </div>
 <div class="figure align-center">
-<img alt="plot of chunk by-levels" src="_images/by-levels1.png" />
-<p class="caption">plot of chunk by-levels</p>
+<img alt="plot of chunk by-levels" src="_images/by-levels1.svg" /><p class="caption">plot of chunk by-levels</p>
 </div>
-<div class="highlight-r"><div class="highlight"><pre>ggplot<span class="p">(</span>mtcars<span class="p">,</span> aes<span class="p">(</span>x <span class="o">=</span> hp<span class="p">,</span> y <span class="o">=</span> mpg<span class="p">,</span> colour <span class="o">=</span> factor<span class="p">(</span>vs<span class="p">)))</span> <span class="o">+</span>
-    geom_point<span class="p">()</span> <span class="o">+</span> stat_smooth<span class="p">(</span>aes<span class="p">(</span>group <span class="o">=</span> <span class="m">1</span><span class="p">),</span> method <span class="o">=</span> <span class="s">&quot;lm&quot;</span><span class="p">,</span>
-    formula <span class="o">=</span> y ~ x<span class="p">,</span> se <span class="o">=</span> <span class="kc">FALSE</span><span class="p">)</span>
-</pre></div>
+<div class="highlight-python"><pre>ggplot(mtcars, aes(x = hp, y = mpg, colour = factor(vs))) +
+    geom_point() + stat_smooth(aes(group = 1), method = "lm",
+    formula = y ~ x, se = FALSE)</pre>
 </div>
 <div class="figure align-center">
-<img alt="plot of chunk by-levels" src="_images/by-levels2.png" />
-<p class="caption">plot of chunk by-levels</p>
+<img alt="plot of chunk by-levels" src="_images/by-levels2.svg" /><p class="caption">plot of chunk by-levels</p>
 </div>
-<div class="highlight-r"><div class="highlight"><pre>ggplot<span class="p">(</span>mtcars<span class="p">,</span> aes<span class="p">(</span>x <span class="o">=</span> hp<span class="p">,</span> y <span class="o">=</span> mpg<span class="p">))</span> <span class="o">+</span> geom_point<span class="p">(</span>aes<span class="p">(</span>colour <span class="o">=</span> factor<span class="p">(</span>vs<span class="p">)))</span> <span class="o">+</span>
-    stat_smooth<span class="p">(</span>method <span class="o">=</span> <span class="s">&quot;lm&quot;</span><span class="p">,</span> formula <span class="o">=</span> y ~ x<span class="p">,</span> se <span class="o">=</span> <span class="kc">FALSE</span><span class="p">)</span>
-</pre></div>
+<div class="highlight-python"><pre>ggplot(mtcars, aes(x = hp, y = mpg)) + geom_point(aes(colour = factor(vs))) +
+    stat_smooth(method = "lm", formula = y ~ x, se = FALSE)</pre>
 </div>
 <div class="figure align-center">
-<img alt="plot of chunk by-levels" src="_images/by-levels3.png" />
-<p class="caption">plot of chunk by-levels</p>
+<img alt="plot of chunk by-levels" src="_images/by-levels3.svg" /><p class="caption">plot of chunk by-levels</p>
 </div>
 </div>
 <div class="section" id="summary">
-<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
+<h1>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h1>
 <p>Smoothed, conditional summaries are easy to add to plots in ggplot2.
 This makes it easy to see overall trends and explore visually how
 different models fit the data. Many of the examples were redundant or
@@ -220,7 +200,6 @@ clearly a poor choice for this particular data; the purpose was to
 demonstrate the capabilities of ggplot2 and show what options are
 available. Each example may be more or less appropriate for exploring a
 particular set of data.</p>
-</div>
 </div>
 
 
@@ -231,11 +210,8 @@ particular set of data.</p>
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">How can I explore different smooths in ggplot2?</a><ul>
-<li><a class="reference internal" href="#types-of-smooths">Types of smooths</a></li>
+<li><a class="reference internal" href="#">Types of smooths</a></li>
 <li><a class="reference internal" href="#summary">Summary</a></li>
-</ul>
-</li>
 </ul>
 
   <h4>Previous topic</h4>

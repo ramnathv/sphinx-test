@@ -1,3 +1,4 @@
+R FAQ
 How can I explore different smooths in ggplot2?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -13,8 +14,6 @@ variable based on some model. To demonstrate this, we will use a data
 set that is built into **R**, the '**mtcars**' data. Specifically, we
 will look at the relationship between miles per gallon (**mpg**) and
 horsepower (**hp**). in 32 different cars.
-
-.. highlight:: r
 
 ::
 
@@ -37,7 +36,7 @@ horsepower (**hp**). in 32 different cars.
     p <- ggplot(mtcars, aes(x = hp, y = mpg)) + geom_point()
     print(p)
 
-.. figure:: figs/mtcars.png
+.. figure:: fig/mtcars.svg
    :align: center
    :alt: plot of chunk mtcars
 
@@ -54,7 +53,7 @@ extremes.
     p + stat_smooth(method = "lm", formula = y ~ x, 
         size = 1)
 
-.. figure:: figs/linear-fit.png
+.. figure:: fig/linear-fit.svg
    :align: center
    :alt: plot of chunk linear-fit
 
@@ -67,7 +66,7 @@ level of horsepower, we can instead use a locally weighted regression.
     p + stat_smooth(method = "loess", formula = y ~ 
         x, size = 1)
 
-.. figure:: figs/local-wt-reg.png
+.. figure:: fig/local-wt-reg.svg
    :align: center
    :alt: plot of chunk local-wt-reg
 
@@ -81,7 +80,7 @@ to include a squared term for x (which is horse power here).
     p + stat_smooth(method = "lm", formula = y ~ x + 
         I(x^2), size = 1)
 
-.. figure:: figs/quad-fun-approx.png
+.. figure:: fig/quad-fun-approx.svg
    :align: center
    :alt: plot of chunk quad-fun-approx
 
@@ -95,7 +94,7 @@ the poly() function can easily fit polynomials of arbitrary degree
     p + stat_smooth(method = "lm", formula = y ~ poly(x, 
         2), size = 1)
 
-.. figure:: figs/polynomial-fit.png
+.. figure:: fig/polynomial-fit.svg
    :align: center
    :alt: plot of chunk polynomial-fit
 
@@ -114,7 +113,7 @@ easily used inside our graph.
     p + stat_smooth(method = "gam", formula = y ~ 
         s(x), size = 1)
 
-.. figure:: figs/gams.png
+.. figure:: fig/gams.svg
    :align: center
    :alt: plot of chunk gams
 
@@ -128,7 +127,7 @@ choose 3.
     p + stat_smooth(method = "gam", formula = y ~ 
         s(x, k = 3), size = 1)
 
-.. figure:: figs/custom-gam.png
+.. figure:: fig/custom-gam.svg
    :align: center
    :alt: plot of chunk custom-gam
 
@@ -149,7 +148,7 @@ off.
         stat_smooth(method = "gam", formula = y ~ s(x, k = 3), 
             size = 1, se = FALSE, colour = "violet")
 
-.. figure:: figs/multiple-smooths.png
+.. figure:: fig/multiple-smooths.svg
    :align: center
    :alt: plot of chunk multiple-smooths
 
@@ -167,7 +166,7 @@ allows a sort of examination of 'interactions' in the data.
         geom_point() + stat_smooth(method = "lm", formula = y ~ 
         x, se = FALSE)
 
-.. figure:: figs/by-levels1.png
+.. figure:: fig/by-levels1.svg
    :align: center
    :alt: plot of chunk by-levels
 
@@ -178,7 +177,7 @@ allows a sort of examination of 'interactions' in the data.
         geom_point() + stat_smooth(aes(group = 1), method = "lm", 
         formula = y ~ x, se = FALSE)
 
-.. figure:: figs/by-levels2.png
+.. figure:: fig/by-levels2.svg
    :align: center
    :alt: plot of chunk by-levels
 
@@ -188,7 +187,7 @@ allows a sort of examination of 'interactions' in the data.
     ggplot(mtcars, aes(x = hp, y = mpg)) + geom_point(aes(colour = factor(vs))) + 
         stat_smooth(method = "lm", formula = y ~ x, se = FALSE)
 
-.. figure:: figs/by-levels3.png
+.. figure:: fig/by-levels3.svg
    :align: center
    :alt: plot of chunk by-levels
 
