@@ -2,7 +2,7 @@
 Statistical Computing Seminars: Graphics in R I
 ===============================================
 
-.. highlight:: r
+.. highlight:: S
 
 R is often praised for its graphics. I think R is good at graphics for
 the same reason it is good at anything else---it's flexible. People just
