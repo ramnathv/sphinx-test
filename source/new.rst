@@ -65,6 +65,10 @@ Another way to highlight code is to doe the following::
 	    '</style>'), 
 	        collapse = '\n')
 	}
+
+.. raw:: html
+
+   <iframe src='http://bl.ocks.org/ramnathv/raw/8970935/mymap.html'></iframe>
 	
 .. seealso:: This is a simple **seealso** note. Other inline directive may be included (e.g., math :math:`\alpha`) but not al of them.
 
