@@ -50,7 +50,7 @@ This page covers a few basic graphs:
 I put bar plots and piecharts in italics and at the end because I belive
 they are overused and generally inefficient at communicating data.
 
-.. boxplots:
+.. boxplot:
 
 Box Plots
 ^^^^^^^^^
